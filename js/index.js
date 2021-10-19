@@ -36,7 +36,7 @@ const onSubmit = e => {
 	operationsArray.push(transaction);
 
 	operationsArray.reduce((acc, transaction) => {
-		return (totalBalanceRef.textContent = acc + transaction.value);
+		return (totalBalanceRef.innerHTML = acc + transaction.value);
 		console.log(acc);
 		console.log(transaction.value);
 	}, 0);
@@ -50,14 +50,8 @@ function renderEarnOrSpent(array) {
 	let expenses = 0;
 	let income = 0;
 	array.forEach(element => {
-		expenses += element.value;
-		income += element.value;
-		element.value < 0
-			? (totalExpensesRef.innerHTML = `${expenses} &#8372;`)
-			: (totalIncomeRef.innerHTML = `${income} &#8372;`);
+		element.value < 0 ? (expenses += element.value) : (income += element.value);
 	});
-	console.log(expenses);
-	console.log(income);
-	console.log(totalIncomeRef.textContent);
-	console.log(totalBalanceRef.textContent);
+	totalIncomeRef.innerHTML = `${income} &#8372`;
+	totalExpensesRef.innerHTML = `${expenses} &#8372;`;
 }
