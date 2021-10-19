@@ -27,17 +27,37 @@ const onSubmit = e => {
 	} else if (Number(amount.value) > 0) {
 		operationHistoryList.insertAdjacentHTML('beforeend', earned);
 	}
-	operationsArray.push(Number(amount.value));
-	console.log(operationsArray);
 
-	operationsArray.reduce((acc, value) => {
-		return (totalBalanceRef.textContent = acc + value);
+	const transaction = {
+		id: Date.now(),
+		value: Number(amount.value),
+	};
+
+	operationsArray.push(transaction);
+
+	operationsArray.reduce((acc, transaction) => {
+		return (totalBalanceRef.textContent = acc + transaction.value);
 		console.log(acc);
-		console.log(value);
+		console.log(transaction.value);
 	}, 0);
-
+	renderEarnOrSpent(operationsArray);
 	e.currentTarget.reset();
 };
 
 formRef.addEventListener('submit', onSubmit);
-console.log(totalBalanceRef.textContent);
+
+function renderEarnOrSpent(array) {
+	let expenses = 0;
+	let income = 0;
+	array.forEach(element => {
+		expenses += element.value;
+		income += element.value;
+		element.value < 0
+			? (totalExpensesRef.innerHTML = `${expenses} &#8372;`)
+			: (totalIncomeRef.innerHTML = `${income} &#8372;`);
+	});
+	console.log(expenses);
+	console.log(income);
+	console.log(totalIncomeRef.textContent);
+	console.log(totalBalanceRef.textContent);
+}
